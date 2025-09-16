@@ -112,6 +112,11 @@ est_amp_bh = 2 * np.abs(XX_bh[np.arange(M), idx_max_bh]) / G_bh
 idx_max_h = np.argmax(np.abs(XX_h), axis=1)
 est_amp_h  = 2 * np.abs(XX_h[np.arange(M), idx_max_h]) / G_h
 
+
+##
+# Estimador de amplitud
+##
+
 #Hago una funcion para no tener que hacerlo para los 4 casos
 def Estadistica (est_amp, a0):
     E_a = np.mean(est_amp)
@@ -127,6 +132,27 @@ E_h, S_h, V_h = Estadistica(est_amp_h, a0)
 print("Amplitud media:", E)
 print("Sesgo:", S)
 print("Varianza:", V)
+
+##
+# Estimador de frecuencia
+##
+est_frec_sin_vent = f[idx_max_sin_vent] /2
+est_frec_ft = f[idx_max_ft] /2
+est_frec_bh = f[idx_max_bh] /2
+est_frec_h = f[idx_max_h] /2
+
+def EstadisticaFrec(est_frec):
+    E_f = np.mean(est_frec)
+    V_f = np.var(est_frec)
+    return E_f, V_f
+
+E_f, V_f = EstadisticaFrec(est_frec_sin_vent)
+E_f_ft, V_f_ft = EstadisticaFrec(est_frec_ft)
+E_f_bh, V_f_bh = EstadisticaFrec(est_frec_bh)
+E_f_h, V_f_h = EstadisticaFrec(est_frec_h)
+
+print("Estimador de frecuencia:", E_f)
+print("Varianza:", V_f)
 
 
 plt.figure()
