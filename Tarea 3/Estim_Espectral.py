@@ -57,19 +57,20 @@ realizaciones_xx_ft = realizaciones_xx * v_ft
 realizaciones_xx_bh = realizaciones_xx * v_bh 
 realizaciones_xx_h = realizaciones_xx * v_h 
 
-XX = np.fft.fft(realizaciones_xx, axis=1)
-XX_ft = np.fft.fft(realizaciones_xx_ft, axis=1)
-XX_bh = np.fft.fft(realizaciones_xx_bh, axis=1)
-XX_h = np.fft.fft(realizaciones_xx_h, axis=1)
+XX = np.fft.fft(realizaciones_xx)
+XX_ft = np.fft.fft(realizaciones_xx_ft)
+XX_bh = np.fft.fft(realizaciones_xx_bh)
+XX_h = np.fft.fft(realizaciones_xx_h)
 
-# Concato todas las realizaciones 
-concat_XX = np.hstack(XX) 
-concat_XX_ft = np.hstack(XX_ft) 
-concat_XX_bh = np.hstack(XX_bh) 
-concat_XX_h = np.hstack(XX_h) 
+# Concateno todas las realizaciones 
+# concat_XX = np.hstack(XX) 
+# concat_XX_ft = np.hstack(XX_ft) 
+# concat_XX_bh = np.hstack(XX_bh) 
+# concat_XX_h = np.hstack(XX_h) 
 
 # Frecuencia para el eje x 
 f = np.linspace(0, fs, N) 
+ff= np.tile(f.reshape((1,N)), (M,1))
 f_concat = np.tile(f, M) 
 w = 2 * np.pi * f / fs
 
@@ -117,9 +118,9 @@ E_ft, S_ft, V_ft = Estadistica(est_amp_ft, a0)
 E_bh, S_bh, V_bh = Estadistica(est_amp_bh, a0) 
 E_h, S_h, V_h = Estadistica(est_amp_h, a0) 
 
-# print("Amplitud media:", E)
-# print("Sesgo:", S) 
-# print("Varianza:", V) 
+print("Amplitud media:", E)
+print("Sesgo:", S) 
+print("Varianza:", V) 
 
 
 freqs = np.fft.fftfreq(N, d=1/fs)   # eje FFT coherente [-fs/2, fs/2)
@@ -143,12 +144,12 @@ E_f_ft, S_f_ft, V_f_ft = EstadisticaFrec(est_frec_ft, f_ref)
 E_f_bh, S_f_bh, V_f_bh = EstadisticaFrec(est_frec_bh, f_ref) 
 E_f_h, S_f_h, V_f_h = EstadisticaFrec(est_frec_h, f_ref) 
 
-# print("Estimador de Frecuencia:", E_f) 
-# print("Sesgo de frecuencia:", S_f) 
-# print("Varianza de la frecuencia:", V_f) 
+print("Estimador de Frecuencia:", E_f) 
+print("Sesgo de frecuencia:", S_f) 
+print("Varianza de la frecuencia:", V_f) 
 
 plt.figure() 
-plt.plot(f_concat, 20*np.log10(np.abs(concat_XX)), 'x', color='hotpink') #en dB 
+plt.plot(ff, 20*np.log10(np.abs(XX)), 'x', color='hotpink') #en dB 
 #plt.plot(f_concat, np.abs(concat_XX), color='hotpink') #En veces
 plt.xlim(0, 500) # Limita el eje x 
 plt.title('Magnitud promedio sin ventana') 
@@ -156,7 +157,7 @@ plt.xlabel('Frecuencia [Hz]')
 plt.ylabel('Amplitud [V]')
 
 plt.figure() 
-plt.plot(f_concat, 20*np.log10(np.abs(concat_XX_ft)), 'x', color='darkturquoise') 
+plt.plot(ff, 20*np.log10(np.abs(XX_ft)), 'x', color='darkturquoise') 
 #plt.plot(f_concat, np.abs(concat_XX_ft), color='darkturquoise') 
 plt.xlim(0, 500) # Limita el eje x
 plt.title('Magnitud promedio con ventana Flattop') 
@@ -164,7 +165,7 @@ plt.xlabel('Frecuencia [Hz]')
 plt.ylabel('Amplitud [V]') 
 
 plt.figure() 
-plt.plot(f_concat, 20*np.log10(np.abs(concat_XX_bh)), 'x', color='darkblue')
+plt.plot(ff, 20*np.log10(np.abs(XX_bh)), 'x', color='darkblue')
 #plt.plot(f_concat, np.abs(concat_XX_bh), color='darkblue') 
 plt.xlim(0, 500) # Limita el eje x
 plt.title('Magnitud promedio con ventana Blackman-Harris') 
@@ -172,7 +173,7 @@ plt.xlabel('Frecuencia [Hz]')
 plt.ylabel('Amplitud [V]') 
 
 plt.figure() 
-plt.plot(f_concat, 20*np.log10(np.abs(concat_XX_h)), 'x', color='darkmagenta') 
+plt.plot(ff, 20*np.log10(np.abs(XX_h)), 'x', color='darkmagenta') 
 #plt.plot(f_concat, np.abs(concat_XX_h), color='darkmagenta') 
 plt.xlim(0, 500) # Limita el eje x
 plt.title('Magnitud promedio con ventana Hamming') 
