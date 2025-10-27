@@ -1,0 +1,2 @@
+La primera es con nperseg=N/4, la segunda N/10 y la tercera N/40. Podemos ver que con la tercera nos pasamos de rosca y perdemos las caracterisiticas de la señal. En la de N/4 vemos demasiados picos y valles. Se trata de buscar un compromiso donde no estemos ni muy de un lado ni muy del otro.
+Es todo a ojo. Conviene arrancar con mucha resolución e ir bajándolo. Los puntos importantes son los persistentes. 
